@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\Http\Requests\PostRequest; 
 
-class PostController extends Controller// useする
+class PostController extends Controller
 {
     public function index(Post $post)
     {
@@ -22,10 +22,22 @@ class PostController extends Controller// useする
         return view('create');
     }
 
-    public function store(Post $post, PostRequest $request)// 引数をRequest->PostRequestにする
+    public function store(Post $post, PostRequest $request)
     {
         $input = $request['post'];
         $post->fill($input)->save();
+        return redirect('/posts/' . $post->id);
+    }
+    
+    public function edit(Post $post)
+    {
+        return view('edit')->with(['post' => $post]);
+    }
+    
+    public function update(PostRequest $request, Post $post)
+    {
+        $input_post = $request['post'];
+        $post->fill($input_post)->save();
         return redirect('/posts/' . $post->id);
     }
 }
